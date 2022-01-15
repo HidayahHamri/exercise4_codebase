@@ -52,7 +52,7 @@ class MainViewmodel extends Viewmodel {
 
   void updateNote({dynamic id, Note data}) => update(() async {
         final detail = await _service.updateNote(id: id, data: data);
-        final index = _list.indexWhere((note) => note.id);
+        final index = _list.indexWhere((note) => note.id == id);
         if (index == 0) return;
         _list[index] = detail;
       });
