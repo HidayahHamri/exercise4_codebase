@@ -39,7 +39,7 @@ class NoteServiceRest extends NoteService {
 
   @override
   Future<Note> addNote(Note data) async {
-    final json = await rest.post('notes', data: data);
+    final json = await rest.get('notes', data: data);
     return Note.fromJson(json);
   }
 }
