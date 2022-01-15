@@ -7,6 +7,7 @@
 // Date: Dec 2021
 
 import 'dart:convert';
+import 'package:exercise4/models/note.dart';
 import 'package:http/http.dart' as http;
 
 /// The class `RestService` is the actual service that performs REST operations.
@@ -17,7 +18,7 @@ class RestService {
   const RestService({baseUrl}) : _baseUrl = baseUrl;
 
   /// Send a GET request to retrieve data from a REST server
-  Future get(String endpoint) async {
+  Future get(String endpoint, {Note data}) async {
     final response = await http.get(Uri.parse('$_baseUrl/$endpoint'));
 
     if (response.statusCode == 200) {
