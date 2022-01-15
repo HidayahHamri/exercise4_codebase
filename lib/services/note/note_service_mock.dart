@@ -9,7 +9,6 @@ import '../../models/note.dart';
 /// `NoteServiceMock` is a database service for notes that are stored in internal memory.
 ///
 class NoteServiceMock extends NoteService {
-  //? Sample of mock data is provided
   final _mockDb = <Note>[
     Note(
         title: 'What is Flutter?',
@@ -26,17 +25,38 @@ class NoteServiceMock extends NoteService {
   ];
 
   @override
-  Future<List<Note>> fetchNotes() async {}
+  Future<List<Note>> fetchNotes() async {
+    return [..._mockDb];
+  }
 
   @override
-  Future<Note> getNote(id) async {}
+  Future<Note> getNote(id) async {
+    final detail = _mockDb.firstWhere((note) => note.id == id, orElse: (null));
+    return Note.copy(detail);
+  }
 
   @override
-  Future<Note> updateNote({id, Note data}) async {}
+  Future<Note> updateNote({id, Note data}) async {
+    final index = _mockDb.indexWhere((note) => note.id == id);
+    if (index == 0) {
+      return null;
+    }
+    Note detail = Note(id: id, title: data.title, content: data.content);
+    _mockDb[index] = Note.copy(detail);
+    return Note.copy(_mockDb[index]);
+  }
 
   @override
-  Future<void> removeNote(id) async {}
+  Future<void> removeNote(id) async {
+    _mockDb.removeWhere((note) => note.id == id);
+  }
 
   @override
-  Future<Note> addNote(Note data) async {}
+  Future<Note> addNote(Note data) async {
+    int id = (_mockDb != null && _mockDb.length > 0) ? _mockDb.last.id + 1 : 1;
+    data.id = id;
+    Note detail = data;
+    _mockDb.add(detail);
+    return Note.copy(detail);
+  }
 }
